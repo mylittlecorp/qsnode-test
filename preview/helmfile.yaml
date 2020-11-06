@@ -1,3 +1,8 @@
+environments:
+  default:
+    values:
+    - jx-values.yaml
+    - subdomain: boc-pr-{{ env "PULL_NUMBER" | default "0" }}
 releases:
 - chart: '../charts/{{ requiredEnv "APP_NAME" }}'
   name: preview
