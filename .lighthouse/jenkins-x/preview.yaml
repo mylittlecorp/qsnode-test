@@ -48,7 +48,7 @@ spec:
           script: |
             #!/usr/bin/env bash
             set -x
-            ls /workspace
+            cat /etc/environment
             ls /workspace/source
         - image: gcr.io/jenkinsxio/jx-cli:latest
           name: promote-jx-preview
