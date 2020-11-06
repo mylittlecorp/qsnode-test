@@ -13,6 +13,8 @@ releases:
   - values.yaml.gotmpl
   - jx-values.yaml
   - imagePullSecrets.yaml
+  - ingress:
+      url: test-{{ .Values.subdomain }}.{{ .Values.jxRequirements.ingress.domain }}
   hooks:
   - events: ["presync"]
     showlogs: true
