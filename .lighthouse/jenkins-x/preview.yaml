@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   annotations:
-    # lighthouse.jenkins-x.io/prependStepsURL: https://raw.githubusercontent.com/jenkins-x/jx3-pipeline-catalog/005e78cf69b643862344397a635736a51dd1bd89/tasks/git-clone/git-clone-pr.yaml
+    lighthouse.jenkins-x.io/prependStepsURL: https://raw.githubusercontent.com/jenkins-x/jx3-pipeline-catalog/005e78cf69b643862344397a635736a51dd1bd89/tasks/git-clone/git-clone-pr.yaml
   creationTimestamp: null
   name: preview
 spec:
@@ -35,7 +35,6 @@ spec:
             jx gitops variables
             source /workspace/source/.jx/variables.sh
             VERSION=$(echo ${VERSION} | awk -F. -v OFS=. '{$NF--;print}')
-            env | sort
             jx preview create
         volumes:
         - emptyDir: {}
