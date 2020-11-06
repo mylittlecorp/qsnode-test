@@ -24,11 +24,20 @@ spec:
 {{- if eq "NodePort" .Values.jxRequirements.ingress.serviceType }}
         path: "/{{ .Release.Namespace }}/hook"
 {{- else if .Values.jxRequirements.ingress.domain }}
+{{- if .Values.jxRequirements.ingress.url }}
+    host: {{ .Values.jxRequirements.ingress.url }}
+{{- else }}
     host: {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
+{{- end }}
 {{- end }}
 {{- if .Values.jxRequirements.ingress.tls.enabled }}
   tls:
   - hosts:
+{{- if .Values.jxRequirements.ingress.url }}
+    - {{ .Values.jxRequirements.ingress.url }}
+{{- else }}
+    - {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
+{{- end }}
     - {{ .Values.service.name }}{{ .Values.jxRequirements.ingress.namespaceSubDomain }}{{ .Values.jxRequirements.ingress.domain }}
 {{- if hasKey .Values.jxRequirements.ingress.tls "secretName" }}
     secretName: "{{ .Values.jxRequirements.ingress.tls.secretName }}"
