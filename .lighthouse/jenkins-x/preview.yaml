@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   annotations:
-    lighthouse.jenkins-x.io/prependStepsURL: https://raw.githubusercontent.com/jenkins-x/jx3-pipeline-catalog/005e78cf69b643862344397a635736a51dd1bd89/tasks/git-clone/git-clone-pr.yaml
+    # lighthouse.jenkins-x.io/prependStepsURL: https://raw.githubusercontent.com/jenkins-x/jx3-pipeline-catalog/005e78cf69b643862344397a635736a51dd1bd89/tasks/git-clone/git-clone-pr.yaml
   creationTimestamp: null
   name: preview
 spec:
@@ -33,34 +33,9 @@ spec:
             #!/usr/bin/env bash
             set -x
             jx gitops variables
-            cat /workspace/source/.jx/variables.sh
             source /workspace/source/.jx/variables.sh
-            jx gitops variables --build-number $((BUILD_NUMBER-1))
-            cat /workspace/source/.jx/variables.sh
-        - image: gcr.io/jenkinsxio/jx-cli:latest
-          name: env
-          resources: {}
-          script: |
-            #!/usr/bin/env bash
-            set -x
+            VERSION=$(echo ${VERSION} | awk -F. -v OFS=. '{$NF--;print}')
             env | sort
-            cat /workspace/source/.jx/variables.sh
-        - image: gcr.io/jenkinsxio/jx-cli:latest
-          name: ls
-          resources: {}
-          script: |
-            #!/usr/bin/env bash
-            set -x
-            cat /etc/environment
-            ls /workspace/source
-        - image: gcr.io/jenkinsxio/jx-cli:latest
-          name: promote-jx-preview
-          resources: {}
-          script: |
-            #!/bin/bash
-            set -x
-            env | sort
-            source /workspace/source/.jx/variables.sh
             jx preview create
         volumes:
         - emptyDir: {}
