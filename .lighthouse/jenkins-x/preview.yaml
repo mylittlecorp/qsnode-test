@@ -34,10 +34,7 @@ spec:
             set -x
             jx gitops variables
             source /workspace/source/.jx/variables.sh
-            cat /workspace/source/.jx/variables.sh
-            echo $VERSION
             VERSION=$(echo ${VERSION} | awk -F- -v OFS=- '{$NF--;print}')
-            echo $VERSION
             jx preview create
         volumes:
         - emptyDir: {}
