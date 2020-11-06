@@ -27,12 +27,21 @@ spec:
           workingDir: /workspace/source
         steps:
         - image: gcr.io/jenkinsxio/jx-cli:latest
+          name: jx-variables
+          resources: {}
+          script: |
+            #!/usr/bin/env bash
+            set -x
+            jx gitops variables
+            export BUILD_NUMBER=$BUILD_NUMBER-1
+        - image: gcr.io/jenkinsxio/jx-cli:latest
           name: env
           resources: {}
           script: |
             #!/usr/bin/env bash
             set -x
             env | sort
+            cat /workspace/source/.jx/variables.sh
         - image: gcr.io/jenkinsxio/jx-cli:latest
           name: ls
           resources: {}
@@ -41,14 +50,6 @@ spec:
             set -x
             ls /workspace
             ls /workspace/source
-        - image: gcr.io/jenkinsxio/jx-cli:latest
-          name: jx-variables
-          resources: {}
-          script: |
-            #!/usr/bin/env bash
-            set -x
-            jx gitops variables
-            export BUILD_NUMBER=$BUILD_NUMBER-1
         - image: gcr.io/jenkinsxio/jx-cli:latest
           name: promote-jx-preview
           resources: {}
