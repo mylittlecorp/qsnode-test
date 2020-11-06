@@ -33,6 +33,12 @@ spec:
             #!/usr/bin/env bash
             set -x
             jx gitops variables
+        - image: gcr.io/kaniko-project/executor:debug-1d1298564878f2a57d8f77b4269c66c6e2d9bb6b
+          name: build-container-build
+          resources: {}
+          script: |
+            #!/busybox/sh
+            cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson /kaniko/.docker/config.json
         - image: gcr.io/jenkinsxio/jx-cli:latest
           name: promote-jx-preview
           resources: {}
@@ -40,7 +46,6 @@ spec:
             #!/bin/bash
             set -x
             source /workspace/source/.jx/variables.sh
-            cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson /kaniko/.docker/config.json
             jx preview create
         volumes:
         - emptyDir: {}
