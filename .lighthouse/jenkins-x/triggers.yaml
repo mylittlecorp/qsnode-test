@@ -2,8 +2,8 @@ apiVersion: config.lighthouse.jenkins-x.io/v1alpha1
 kind: TriggerConfig
 spec:
   presubmits:
-  - name: pr-without-preview
-    context: "pr-without-preview"
+  - name: pr
+    context: "pr"
     always_run: true
     optional: false
     trigger: "/test"
